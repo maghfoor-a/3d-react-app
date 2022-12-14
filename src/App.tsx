@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Stage } from '@react-three/drei'
+import { Float, OrbitControls, Stage } from '@react-three/drei'
 import { useState } from 'react';
 import { randFloat } from 'three/src/math/MathUtils';
 
@@ -33,14 +33,14 @@ function App() {
               <group position={[4, 0, 4]}>
                 <Present color1={myColors[2]} color2={myColors[3]} size={0.5} />
               </group>
-            <Tree />
-            <group>
-            {snowFlakes.map(snowflake => {
-              return <SnowFlake key={snowflake.id} position={snowflake.location}/>
-            })}
+              <Tree />
+              <group>
+                {snowFlakes.map(snowflake => {
+                  return <SnowFlake key={snowflake.id} position={snowflake.location} />
+                })}
+              </group>
             </group>
-            </group>
-            
+
           </Stage>
           {/* <mesh position-y={-10}>
             <boxGeometry args={[1000, 0.01, 1000]} />
@@ -63,10 +63,18 @@ interface SnowFlakeProps {
 
 function SnowFlake(props: SnowFlakeProps): JSX.Element {
   return (
-    <mesh position={props.position}>
-      <boxGeometry args={[0.2 , 0.2, 0.2]}/>
-      <meshStandardMaterial color="white"/>
-    </mesh>
+    <Float
+      speed={1} // Animation speed, defaults to 1
+      rotationIntensity={1} // XYZ rotation intensity, defaults to 1
+      floatIntensity={1} // Up/down float intensity, works like a multiplier with floatingRange,defaults to 1
+      floatingRange={[1, 10]} // Range of y-axis values the object will float within, defaults to [-0.1,0.1]
+    >
+      <mesh position={props.position}>
+        <sphereGeometry args={[0.1, 5, 5]} />
+        <meshStandardMaterial color="white" />
+      </mesh>
+    </Float>
+
   )
 }
 const snowFlakes = CreateSnowFlake()
@@ -77,9 +85,9 @@ interface SnowFlake {
   id: number
 }
 function CreateSnowFlake() {
-  const varstemp:SnowFlake[] = []
-  for(let i=0; i < 1000; i++) {
-    varstemp.push({id: i, location: randomPosition()})
+  const varstemp: SnowFlake[] = []
+  for (let i = 0; i < 1500; i++) {
+    varstemp.push({ id: i, location: randomPosition() })
   }
 
   function randomPosition(): [number, number, number] {
