@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, OrbitControls, Stage } from '@react-three/drei'
+import { Center, Float, OrbitControls, Stage, Text3D } from '@react-three/drei'
 import { useState } from 'react';
 import { randFloat } from 'three/src/math/MathUtils';
 
@@ -111,6 +111,9 @@ function Present(props: PresentProps) {
 
   return (
     <group scale={props.size}>
+      <Center top left position-y={3}>
+        <Text3D font={"/Arimo_Bold.json"}>Presents</Text3D>
+      </Center>
       <mesh position={[0, 2, 0]}>
         <boxGeometry args={[6, 0.5, 5]} />
         <meshStandardMaterial color={props.color1} />
@@ -124,8 +127,9 @@ function Present(props: PresentProps) {
 }
 
 function Tree() {
+  const [size, setSize] = useState(1)
   return (
-    <group>
+    <group onPointerEnter={() => setSize((prev) => prev*1.5)} onPointerLeave={() => setSize((prev) => prev/1.5)} scale={size}>
       <mesh position-y={10}>
         <coneGeometry args={[3, 7, 8]} />
         <meshStandardMaterial color={"green"} />
